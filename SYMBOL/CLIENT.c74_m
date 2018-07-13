@@ -9,11 +9,21 @@
 003100 FILE SECTION.                                                    AD180713    
 003200 FD ENTRADA VALUE OF FILETYPE IS 7                                AD180713    
 003300                     TITLE IS "ARC/CHARS".                        AD180713    
-003400 01 REG-ENTRADA               PIC X(160).                         AD180713    
+003400 01 REG-ENTRADA               PIC X(256).                         AD180713    
 003500                                                                  AD180713    
 003600 FD SALIDA.                                                       AD180713    
-003700 01 REG-SALIDA                PIC X(160).                         AD180713    
+003700 01 REG-SALIDA                PIC X(256).                         AD180713    
 003800                                                                  AD180713    
+003820 WORKING-STORAGE SECTION.                                         AD180713    
+003840 01  I                        REAL.                               AD180713    
+003850 01  R REDEFINES I.                                               AD180713    
+003852     03 FILLER                PIC X(05).                          AD180713    
+003855     03 R-I                   PIC X.                              AD180713    
+003860 01  ANTERIOR                 PIC X(256).                         AD180713    
+003880 01  TEST                     PIC X(256).                         AD180713    
+003900 01  CHARS-TEST REDEFINES TEST.                                   AD180713    
+003920     03 CHAR                  PIC X OCCURS 256 TIMES.             AD180713    
+003940                                                                  AD180713    
 004000 PROCEDURE DIVISION.                                              AD180713    
 005000 UNICA SECTION.                                                   AD180713    
 006000 PARRAFO-1.                                                       AD180713    
@@ -28,6 +38,31 @@
 006350       USING REG-ENTRADA.                                         AD180713    
 006400                                                                  AD180713    
 006450     WRITE REG-SALIDA FROM REG-ENTRADA.                           AD180713    
-006550     CLOSE SALIDA LOCK.                                           AD180713    
 006600                                                                  AD180713    
+006610     MOVE SPACES        TO TEST                                   AD180713    
+006620     PERFORM LOAD-CHAR                                            AD180713    
+006640       VARYING I FROM 1 BY 1                                      AD180713    
+006650       UNTIL I > 256.                                             AD180713    
+006660                                                                  AD180713    
+006680     MOVE TEST          TO ANTERIOR                               AD180713    
+006690     WRITE REG-SALIDA FROM TEST                                   AD180713    
+006700     CALL "TRANSLATETEXT OF OBJECT/LIB/TRADUCE/CARACTERES"        AD180713    
+006720       USING TEST.                                                AD180713    
+006730     WRITE REG-SALIDA FROM TEST                                   AD180713    
+006740     IF TEST = ANTERIOR                                           AD180713    
+006760        DISPLAY "LIBRARY NO ESTA MODIFICANDO"                     AD180713    
+006780        CHANGE ATTRIBUTE STATUS OF MYSELF TO VALUE(TERMINATED).   AD180713    
+006800                                                                  AD180713    
+006820     MOVE TEST          TO ANTERIOR                               AD180713    
+006840     CALL "TRANSLATETEXT OF OBJECT/LIB/TRADUCE/CARACTERES"        AD180713    
+006860       USING TEST.                                                AD180713    
+006870     WRITE REG-SALIDA FROM TEST                                   AD180713    
+006880     IF TEST NOT = ANTERIOR                                       AD180713    
+006900        DISPLAY "LIBRARY ESTA MODIFICANDO CARACTERES VALIDOS"     AD180713    
+006920        CHANGE ATTRIBUTE STATUS OF MYSELF TO VALUE(TERMINATED).   AD180713    
+006940                                                                  AD180713    
+006950     CLOSE SALIDA LOCK.                                           AD180713    
 007000     STOP RUN.                                                    AD180713    
+008000                                                                  AD180713    
+009000 LOAD-CHAR.                                                       AD180713    
+010000     MOVE R-I                 TO CHAR(I).                         AD180713    
