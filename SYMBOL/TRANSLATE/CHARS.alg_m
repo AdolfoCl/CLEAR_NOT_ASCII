@@ -61,6 +61,8 @@
       "abcdefghijklmnopqrstuvwxyz",                                     10003600ADC-180713
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ" TO                                   10003700ADC-180713
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ",                                     10003800ADC-180713
+      "1234567890" TO                                                   10003900ADC-180713
+      "1234567890",                                                     10004000ADC-180713
       "|!#$%&/()='*+~]}`[{^_-:.;,<>@?" TO                               10004200ADC-180713
       "|!#$%&/()='*+~]}`[{^_-:.;,<>@?"                                  10004300ADC-180713
      );                                                                 10004400ADC-180712
