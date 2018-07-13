@@ -1,0 +1,33 @@
+000500$TADS                                                             AD180713    
+001000 IDENTIFICATION DIVISION.                                         AD180713    
+002000 ENVIRONMENT DIVISION.                                            AD180713    
+002200 INPUT-OUTPUT SECTION.                                            AD180713    
+002400 FILE-CONTROL.                                                    AD180713    
+002600     SELECT ENTRADA ASSIGN TO DISK.                               AD180713    
+002800     SELECT SALIDA ASSIGN TO DISK.                                AD180713    
+003000 DATA DIVISION.                                                   AD180713    
+003100 FILE SECTION.                                                    AD180713    
+003200 FD ENTRADA VALUE OF FILETYPE IS 7                                AD180713    
+003300                     TITLE IS "ARC/CHARS".                        AD180713    
+003400 01 REG-ENTRADA               PIC X(160).                         AD180713    
+003500                                                                  AD180713    
+003600 FD SALIDA.                                                       AD180713    
+003700 01 REG-SALIDA                PIC X(160).                         AD180713    
+003800                                                                  AD180713    
+004000 PROCEDURE DIVISION.                                              AD180713    
+005000 UNICA SECTION.                                                   AD180713    
+006000 PARRAFO-1.                                                       AD180713    
+006050     OPEN INPUT ENTRADA.                                          AD180713    
+006060     OPEN OUTPUT SALIDA.                                          AD180713    
+006100     READ ENTRADA                                                 AD180713    
+006150       AT END                                                     AD180713    
+006200          STOP RUN.                                               AD180713    
+006220     WRITE REG-SALIDA FROM REG-ENTRADA.                           AD180713    
+006250                                                                  AD180713    
+006300     CALL "TRANSLATETEXT OF OBJECT/LIB/TRADUCE/CARACTERES"        AD180713    
+006350       USING REG-ENTRADA.                                         AD180713    
+006400                                                                  AD180713    
+006450     WRITE REG-SALIDA FROM REG-ENTRADA.                           AD180713    
+006550     CLOSE SALIDA LOCK.                                           AD180713    
+006600                                                                  AD180713    
+007000     STOP RUN.                                                    AD180713    
